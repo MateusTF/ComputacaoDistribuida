@@ -1,0 +1,71 @@
+type Album {
+  id: Int!
+  titulo: String!
+  ano: Int!
+  artistaId: Int!
+  artista: Artista!
+  musicas: [Musica!]!
+}
+
+type Artista {
+  id: Int!
+  nome: String!
+  pais: String!
+  albuns: [Album!]!
+}
+
+type Genero {
+  id: Int!
+  nome: String!
+}
+
+type Musica {
+  id: Int!
+  nome: String!
+  duracaoSeg: Int!
+  albumId: Int!
+  generoId: Int!
+  album: Album!
+  genero: Genero!
+  playlists: [Playlist!]!
+}
+
+type Mutation {
+  criarUsuario(nome: String!, idade: Int!): Usuario!
+  atualizarUsuario(id: Int!, nome: String = null, idade: Int = null): Usuario!
+  removerUsuario(id: Int!): Boolean!
+  criarMusica(nome: String!, duracaoSeg: Int!, albumId: Int!, generoId: Int!): Musica!
+  atualizarMusica(id: Int!, nome: String = null, duracaoSeg: Int = null, albumId: Int = null, generoId: Int = null): Musica!
+  removerMusica(id: Int!): Boolean!
+  criarPlaylist(nome: String!, usuarioId: Int!, musicas: [Int!]!): Playlist!
+  atualizarPlaylist(id: Int!, nome: String = null, musicas: [Int!] = null): Playlist!
+  removerPlaylist(id: Int!): Boolean!
+}
+
+type Playlist {
+  id: Int!
+  nome: String!
+  usuarioId: Int!
+  usuario: Usuario!
+  musicas: [Musica!]!
+}
+
+type Query {
+  usuarios(pagina: Int! = 1, tamanho: Int! = 100): [Usuario!]!
+  usuario(id: Int!): Usuario!
+  musicas(pagina: Int! = 1, tamanho: Int! = 100): [Musica!]!
+  musica(id: Int!): Musica!
+  playlists(pagina: Int! = 1, tamanho: Int! = 100): [Playlist!]!
+  playlist(id: Int!): Playlist!
+  generos: [Genero!]!
+  artistas(pagina: Int! = 1, tamanho: Int! = 100): [Artista!]!
+  artista(id: Int!): Artista!
+  album(id: Int!): Album!
+}
+
+type Usuario {
+  id: Int!
+  nome: String!
+  idade: Int!
+  playlists: [Playlist!]!
+}

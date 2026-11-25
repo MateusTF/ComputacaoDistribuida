@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+strawberry-graphql
+grpcio
+grpcio-tools
+spyne
+lxml
+zeep
+a2wsgi
+psycopg[binary]
+psycopg-pool
+requests
+matplotlib

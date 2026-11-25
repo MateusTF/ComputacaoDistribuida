@@ -1,0 +1,12 @@
+# ambientes e dependências (cada um instala com pip / npm install)
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

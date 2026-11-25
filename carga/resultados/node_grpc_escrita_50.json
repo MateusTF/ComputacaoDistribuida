@@ -1,0 +1,69 @@
+{
+    "root_group": {
+        "groups": {},
+        "checks": {
+                "sucesso": {
+                    "name": "sucesso",
+                    "path": "::sucesso",
+                    "id": "ddc786cfbdd74ca1fc0e485b86b237ad",
+                    "passes": 15809,
+                    "fails": 0
+                }
+            },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "metrics": {
+        "data_sent": {
+            "count": 1779082,
+            "rate": 88705.49571191023
+        },
+        "checks": {
+            "passes": 15809,
+            "fails": 0,
+            "value": 1
+        },
+        "data_received": {
+            "count": 1615142,
+            "rate": 80531.40426080761
+        },
+        "iterations": {
+            "count": 15809,
+            "rate": 788.2408914876262
+        },
+        "vus": {
+            "value": 50,
+            "min": 50,
+            "max": 50
+        },
+        "grpc_req_duration": {
+            "avg": 63.10621469352902,
+            "min": 39.230722,
+            "med": 60.951385,
+            "p(90)": 77.5600404,
+            "p(95)": 85.3418528,
+            "p(99)": 99.42402419999999,
+            "max": 114.752784
+        },
+        "erros": {
+            "passes": 0,
+            "fails": 15809,
+            "value": 0
+        },
+        "iteration_duration": {
+            "max": 114.88257,
+            "avg": 63.35294574299433,
+            "min": 39.507337,
+            "med": 61.15973,
+            "p(90)": 78.0970164,
+            "p(95)": 85.68601319999993,
+            "p(99)": 99.56192671999999
+        },
+        "vus_max": {
+            "value": 50,
+            "min": 50,
+            "max": 50
+        }
+    }
+}

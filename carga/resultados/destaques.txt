@@ -1,0 +1,90 @@
+
+===== MENOR CARGA: 1 usuário(s) =====
+
+-- Leve (músicas de uma playlist (20 itens))
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 776.5           214.6           673.4           323.2           801.4           539.1           739.2           866.6
+p50 ms                 1.2             4.2             1.4             2.9             1.2             1.7             1.3             1.1
+p95 ms                 1.7             5.8             2.1             3.9             1.5             2.4             1.9             1.6
+ranking Python: REST (777) > gRPC (673) > SOAP (323) > GraphQL (215)
+ranking Node.js: SOAP (867) > REST (801) > gRPC (739) > GraphQL (539)
+Node/Python (vazão): REST 1.03x, GraphQL 2.51x, gRPC 1.10x, SOAP 2.68x
+
+-- Pesado (página de 1.000 músicas)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 121.2            34.7            63.0            14.4           187.6           152.2            77.3            97.8
+p50 ms                 7.2            27.6            15.2            65.8             5.1             6.4            12.3             9.9
+p95 ms                13.7            36.2            23.0            93.9             9.1            10.6            20.0            15.7
+ranking Python: REST (121) > gRPC (63) > GraphQL (35) > SOAP (14)
+ranking Node.js: REST (188) > GraphQL (152) > SOAP (98) > gRPC (77)
+Node/Python (vazão): REST 1.55x, GraphQL 4.39x, gRPC 1.23x, SOAP 6.80x
+
+-- Aninhado (playlists de um usuário + músicas de cada)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 187.5           137.8           182.0            78.9           232.9           349.5           190.0           188.7
+p50 ms                 5.1             6.6             5.3            11.8             4.0             2.6             5.1             5.2
+p95 ms                 7.2             9.1             7.3            16.4             5.9             3.9             6.8             6.8
+ranking Python: REST (188) > gRPC (182) > GraphQL (138) > SOAP (79)
+ranking Node.js: GraphQL (349) > REST (233) > gRPC (190) > SOAP (189)
+Node/Python (vazão): REST 1.24x, GraphQL 2.54x, gRPC 1.04x, SOAP 2.39x
+
+-- Escrita (criar playlist com 10 músicas)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 346.9           161.1           384.2           245.0           360.8           323.1           357.4           395.5
+p50 ms                 2.7             5.6             2.5             3.8             2.6             2.9             2.7             2.4
+p95 ms                 3.8             8.2             3.5             5.6             3.7             4.3             3.6             3.5
+ranking Python: gRPC (384) > REST (347) > SOAP (245) > GraphQL (161)
+ranking Node.js: SOAP (396) > REST (361) > gRPC (357) > GraphQL (323)
+Node/Python (vazão): REST 1.04x, GraphQL 2.01x, gRPC 0.93x, SOAP 1.61x
+
+===== MAIOR CARGA: 200 usuário(s) =====
+
+-- Leve (músicas de uma playlist (20 itens))
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                1068.7           197.2          1097.4           319.7          1629.7           996.9          1929.1          1378.8
+p50 ms               174.8           993.3           179.6           602.2           115.7           196.6            99.8           136.6
+p95 ms               256.1          1160.2           236.3           771.2           171.1           235.5           147.7           193.7
+ranking Python: gRPC (1097) > REST (1069) > SOAP (320) > GraphQL (197)
+ranking Node.js: gRPC (1929) > REST (1630) > SOAP (1379) > GraphQL (997)
+Node/Python (vazão): REST 1.53x, GraphQL 5.06x, gRPC 1.76x, SOAP 4.31x
+
+-- Pesado (página de 1.000 músicas)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                  95.7            33.6           139.8            13.3           214.5           150.3           170.3            97.5
+p50 ms              2049.9          5794.0          1409.4         14490.6           932.8          1305.7          1141.8          1996.5
+p95 ms              2367.6          6228.9          1596.9         15619.1          1034.2          1468.5          1462.6          2364.5
+ranking Python: gRPC (140) > REST (96) > GraphQL (34) > SOAP (13)
+ranking Node.js: REST (215) > gRPC (170) > GraphQL (150) > SOAP (97)
+Node/Python (vazão): REST 2.24x, GraphQL 4.47x, gRPC 1.22x, SOAP 7.33x
+
+-- Aninhado (playlists de um usuário + músicas de cada)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 257.2           112.7           284.2            77.5           397.8           378.0           398.1           362.4
+p50 ms               766.9          1752.6           699.7          2511.9           491.4           514.8           506.0           544.9
+p95 ms               873.3          1975.4           790.8          2863.8           614.6           663.1           604.7           630.8
+ranking Python: gRPC (284) > REST (257) > GraphQL (113) > SOAP (77)
+ranking Node.js: gRPC (398) > REST (398) > GraphQL (378) > SOAP (362)
+Node/Python (vazão): REST 1.55x, GraphQL 3.36x, gRPC 1.40x, SOAP 4.68x
+
+-- Escrita (criar playlist com 10 músicas)
+                   REST Py      GraphQL Py         gRPC Py         SOAP Py         REST No      GraphQL No         gRPC No         SOAP No
+op/s                 573.5           171.2           556.7           255.6           731.6           713.6           776.3           777.0
+p50 ms               316.7          1106.5           352.1           776.5           269.3           272.4           250.4           247.5
+p95 ms               527.2          1560.4           424.3           936.8           319.5           336.0           315.8           326.9
+ranking Python: REST (574) > gRPC (557) > SOAP (256) > GraphQL (171)
+ranking Node.js: SOAP (777) > gRPC (776) > REST (732) > GraphQL (714)
+Node/Python (vazão): REST 1.28x, GraphQL 4.17x, gRPC 1.39x, SOAP 3.04x
+
+===== ESCALABILIDADE: vazão com a maior carga ÷ vazão com a menor =====
+Leve     REST-Py 1.4x, GraphQL-Py 0.9x, gRPC-Py 1.6x, SOAP-Py 1.0x, REST-No 2.0x, GraphQL-No 1.8x, gRPC-No 2.6x, SOAP-No 1.6x
+Pesado   REST-Py 0.8x, GraphQL-Py 1.0x, gRPC-Py 2.2x, SOAP-Py 0.9x, REST-No 1.1x, GraphQL-No 1.0x, gRPC-No 2.2x, SOAP-No 1.0x
+Aninhado REST-Py 1.4x, GraphQL-Py 0.8x, gRPC-Py 1.6x, SOAP-Py 1.0x, REST-No 1.7x, GraphQL-No 1.1x, gRPC-No 2.1x, SOAP-No 1.9x
+Escrita  REST-Py 1.7x, GraphQL-Py 1.1x, gRPC-Py 1.4x, SOAP-Py 1.0x, REST-No 2.0x, GraphQL-No 2.2x, gRPC-No 2.2x, SOAP-No 2.0x
+
+===== BYTES POR OPERAÇÃO (1 usuário) =====
+Leve     REST-Py 1812, GraphQL-Py 1866, gRPC-Py 655, SOAP-Py 4146, REST-No 1923, GraphQL-No 1883, gRPC-No 630, SOAP-No 3222
+Pesado   REST-Py 84336, GraphQL-Py 85334, gRPC-Py 28775, SOAP-Py 184699, REST-No 84470, GraphQL-No 81464, gRPC-No 28728, SOAP-No 136702
+Aninhado REST-Py 6156, GraphQL-Py 5473, gRPC-Py 2333, SOAP-Py 15306, REST-No 6600, GraphQL-No 5318, gRPC-No 2233, SOAP-No 11970
+Escrita  REST-Py 247, GraphQL-Py 164, gRPC-Py 125, SOAP-Py 877, REST-No 358, GraphQL-No 262, gRPC-No 100, SOAP-No 802
+
+Erros: máximo 0.0000; execuções: 160; operações: 1515101

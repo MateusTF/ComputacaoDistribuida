@@ -1,0 +1,112 @@
+# Sobe o banco e os 8 serviços (4 tecnologias × Python e Node.js).
+#   docker compose up --build                  -> banco + 8 serviços
+#   docker compose run --rm testes             -> teste funcional (5 consultas + CRUD nos 8)
+#   docker compose run --rm k6 run -e LING=node -e TEC=grpc -e CEN=leve -e VUS=50 /carga/teste_carga.js
+#   python carga/bateria_docker.py             -> bateria completa de testes de carga
+#
+# Portas no seu computador:
+#   Python: REST 8001 · GraphQL 8002 · SOAP 8003 · gRPC 50051
+#   Node:   REST 9001 · GraphQL 9002 · SOAP 9003 · gRPC 50052
+#   PostgreSQL: 5432 (usuário streaming, sem senha)
+
+x-python: &python
+  build: { context: ., dockerfile: python/Dockerfile }
+  image: streaming-python
+  environment:
+    DATABASE_URL: postgresql://streaming@db:5432/streaming
+  depends_on:
+    db: { condition: service_healthy }
+  restart: unless-stopped
+
+x-node: &node
+  build: { context: ., dockerfile: node/Dockerfile }
+  image: streaming-node
+  environment:
+    DATABASE_URL: postgresql://streaming@db:5432/streaming
+  depends_on:
+    db: { condition: service_healthy }
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: streaming
+      POSTGRES_DB: streaming
+      POSTGRES_HOST_AUTH_METHOD: trust
+    command: postgres -c shared_buffers=512MB -c max_connections=200
+    volumes:
+      - ./banco:/docker-entrypoint-initdb.d:ro    # cria as tabelas e carrega os dados na 1ª vez
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "streaming", "-d", "streaming"]
+      interval: 3s
+      retries: 40
+
+  # ---------------- Python ----------------
+  py-rest:
+    <<: *python
+    command: uvicorn rest.servidor:app --host 0.0.0.0 --port 8001
+    ports: ["8001:8001"]
+  py-graphql:
+    <<: *python
+    command: uvicorn graphql_svc.servidor:app --host 0.0.0.0 --port 8002
+    ports: ["8002:8002"]
+  py-soap:
+    <<: *python
+    command: uvicorn soap.servidor:app --host 0.0.0.0 --port 8003
+    ports: ["8003:8003"]
+  py-grpc:
+    <<: *python
+    command: python -m grpc_svc.servidor
+    ports: ["50051:50051"]
+
+  # ---------------- Node.js ----------------
+  node-rest:
+    <<: *node
+    command: node src/rest.ts
+    ports: ["9001:9001"]
+  node-graphql:
+    <<: *node
+    command: node src/graphql.ts
+    ports: ["9002:9002"]
+  node-soap:
+    <<: *node
+    command: node src/soap.ts
+    ports: ["9003:9003"]
+  node-grpc:
+    <<: *node
+    command: node src/grpc.ts
+    ports: ["50052:50052"]
+
+  # ---------------- ferramentas (só rodam quando chamadas) ----------------
+  testes:
+    <<: *python
+    profiles: ["ferramentas"]
+    restart: "no"
+    command: sh -c "sleep 3 && python -m clientes.teste_funcional"
+    environment:
+      HOST_SERVICOS: host.docker.internal
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      db: { condition: service_healthy }
+      py-rest: { condition: service_started }
+      py-graphql: { condition: service_started }
+      py-soap: { condition: service_started }
+      py-grpc: { condition: service_started }
+      node-rest: { condition: service_started }
+      node-graphql: { condition: service_started }
+      node-soap: { condition: service_started }
+      node-grpc: { condition: service_started }
+
+  k6:
+    image: grafana/k6:1.4.2
+    profiles: ["ferramentas"]
+    user: "0:0"                       # permite gravar os resultados em ./carga/resultados
+    environment:
+      HOST: host.docker.internal      # os serviços, pelas portas publicadas
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    volumes:
+      - ./carga:/carga
+      - ./contratos:/contratos:ro
+    working_dir: /carga
