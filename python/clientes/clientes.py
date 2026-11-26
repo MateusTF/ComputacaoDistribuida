@@ -138,7 +138,10 @@ class ClienteGRPC:
 # ======================= SOAP =======================
 class ClienteSOAP:
     def __init__(self, wsdl):
-        self.svc = zeep.Client(wsdl).service  # proxy gerado dinamicamente a partir do WSDL
+        # proxy gerado dinamicamente a partir do WSDL. O endereço das chamadas é o mesmo de onde o
+        # WSDL foi baixado (e não o escrito dentro dele), para funcionar também dentro do Docker.
+        cliente = zeep.Client(wsdl)
+        self.svc = cliente.create_service("{urn:unifor:streaming}Application", wsdl.split("?")[0])
 
     @staticmethod
     def _lista(r):
