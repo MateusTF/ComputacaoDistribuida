@@ -36,10 +36,20 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     command: postgres -c shared_buffers=512MB -c max_connections=200
     volumes:
-      - ./banco:/docker-entrypoint-initdb.d:ro    # cria as tabelas e carrega os dados na 1ª vez
+      - ./banco:/docker-entrypoint-initdb.d:ro # cria as tabelas e carrega os dados na 1ª vez
     ports: ["5432:5432"]
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "streaming", "-d", "streaming"]
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-h",
+          "127.0.0.1",
+          "-U",
+          "streaming",
+          "-d",
+          "streaming",
+        ]
       interval: 3s
       retries: 40
 
@@ -102,9 +112,9 @@ services:
   k6:
     image: grafana/k6:1.4.2
     profiles: ["ferramentas"]
-    user: "0:0"                       # permite gravar os resultados em ./carga/resultados
+    user: "0:0" # permite gravar os resultados em ./carga/resultados
     environment:
-      HOST: host.docker.internal      # os serviços, pelas portas publicadas
+      HOST: host.docker.internal # os serviços, pelas portas publicadas
     extra_hosts: ["host.docker.internal:host-gateway"]
     volumes:
       - ./carga:/carga
